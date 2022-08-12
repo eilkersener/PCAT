@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
-const port = 3000;
 const ejs = require('ejs');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
@@ -13,7 +12,9 @@ const pageController = require('./controllers/pageController');
 
 
 //Connect Database
-mongoose.connect('mongodb://localhost/pcat-test-db');
+mongoose.connect('mongodb+srv://admin:1234@cluster0.21hgl2u.mongodb.net/?retryWrites=true&w=majority').then(()=>{
+  console.log('DB CONNECT')
+}).catch((err)=>{throw err});
 
 //Templete Engine
 app.set('view engine', 'ejs');
@@ -38,6 +39,8 @@ app.get('/photos/edit/:id', pageController.getEditPage);
 
 app.delete('/photos/:id', photoController.deletePhoto);
 
+
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`sunucu ${port} portunda başlatıldı`);
 });
